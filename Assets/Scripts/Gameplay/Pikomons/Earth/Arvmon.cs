@@ -3,6 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Arvmon", menuName = "Pikomon/Earth/Arvmon  ")]
 public class Arvmon : Pikomon
 {
+    public Arvmon()
+    {
+        InitializeDefaults();
+    }
     protected override void InitializeDefaults()
     {
         Name = "Arvmon";
@@ -21,6 +25,6 @@ public class Arvmon : Pikomon
             new Gamble(),
             new RejuvenscentWaters(),
             new BulletBarrage()
-        };  
+        };
     }
 }
