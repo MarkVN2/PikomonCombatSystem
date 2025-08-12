@@ -1,15 +1,13 @@
-
 using UnityEngine;
 
-/// <para><strong>SPECIAL POWER</strong> </para>
-public class SuffocatingFlame : Power
+public class WaterBash : Power
 {
-    public SuffocatingFlame()
+    public WaterBash()
     {
-        Name = "Suffocating Flame";
-        Element = new Fire();
+        Name = "Water Bash";
+        Element = new Water();
         DamageType = IDamageType.Physical;
-        HitChance = 0.75f;
+        HitChance = 0.9f;
         MaxCharges = 3;
         CurrentCharges = 3;
     }
@@ -21,7 +19,7 @@ public class SuffocatingFlame : Power
             float damage = CalculateDamage(user, target);
             Debug.Log($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
             if (!Hit()) return;
-            target.takeDamage(damage);
+            target.TakeDamage(damage);
             Debug.Log($"{Name} used on {target.Name}!");
             CurrentCharges--;
         }

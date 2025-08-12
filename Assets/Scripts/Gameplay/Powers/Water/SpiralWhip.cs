@@ -7,7 +7,7 @@ public class SpiralWhip : Power
     {
         Name = "Spiral Whip";
         Element = new Water();
-        DamageType = IDamageType.Physical;
+        DamageType = IDamageType.Spiritual;
         HitChance = 0.85f;
         MaxCharges = 2;
         CurrentCharges = 2;
@@ -20,7 +20,7 @@ public class SpiralWhip : Power
             float damage = CalculateDamage(user, target);
             Debug.Log($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
             if (!Hit()) return;
-            target.takeDamage(damage);
+            target.TakeDamage(damage);
             Debug.Log($"{Name} used on {target.Name}!");
             CurrentCharges--;
         }

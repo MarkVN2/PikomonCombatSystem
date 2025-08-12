@@ -19,9 +19,9 @@ public class RestoringFlame : Power
     {
         if (CurrentCharges > 0)
         {
+            Debug.Log($"{Name} used on {target.Name}!");
             if (!Hit()) return;
             user.Heal(20f);
-            Debug.Log($"{Name} used on {target.Name}!");
             Debug.Log($"{user.Name} has been healed by 20 points.");
             CurrentCharges--;
         }

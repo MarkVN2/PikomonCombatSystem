@@ -17,11 +17,9 @@ public class Scorching : Power
     {
         if (CurrentCharges > 0)
         {
-            float damage = CalculateDamage(user, target);
-            Debug.Log($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
+            Debug.Log($"{Name} used on {user.Name}!");
             if (!Hit()) return;
-            target.takeDamage(damage);
-            Debug.Log($"{Name} used on {target.Name}!");
+            target.AddEffect(new Burn(target));
             CurrentCharges--;
         }
         else

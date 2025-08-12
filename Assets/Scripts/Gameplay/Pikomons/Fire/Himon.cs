@@ -23,12 +23,12 @@ public class Himon : Pikomon
         Speed = 25f;
         SpiritualAttack = 40f;
         SpiritualDefense = 30f;
-        Powers = new List<System.Type>
+        Powers = new List<Power>
         {
-            typeof(FieryStorm),
-            typeof(RestoringFlame),
-            typeof(SuffocatingFlame),
-            typeof(TenPalms)
+            new FieryStorm(),
+            new RestoringFlame(),
+            new Scorching(),
+            new TenPalms(),
         };
     }
 

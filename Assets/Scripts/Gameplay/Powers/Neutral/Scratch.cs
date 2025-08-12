@@ -1,23 +1,22 @@
 using UnityEngine;
 
-public class BulletBarrage : Power
+public class Scratch : Power
 {
-    public const float ADDITIONAL_DAMAGE = 5f;
-    public BulletBarrage()
+    public Scratch()
     {
-        Name = "Bullet Barrage";
-        Element = new Earth();
+        Name = "Scratch";
+        Element = new Neutral();
         DamageType = IDamageType.Physical;
-        HitChance = 0.35f;
-        MaxCharges = 10;
-        CurrentCharges = 10;
+        HitChance = 0.9f;
+        MaxCharges = 5;
+        CurrentCharges = 5;
     }
-    public override void UsePower(Pikomon user,Pikomon target)
-    {
 
+    public override void UsePower(Pikomon user, Pikomon target)
+    {
         if (CurrentCharges > 0)
         {
-            float damage = CalculateDamage(user, target) + ADDITIONAL_DAMAGE;
+            float damage = CalculateDamage(user, target);
             Debug.Log($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
             if (!Hit()) return;
             target.TakeDamage(damage);

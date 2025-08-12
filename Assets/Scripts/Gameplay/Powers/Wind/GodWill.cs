@@ -1,5 +1,7 @@
-/// <para><strong>SPECIAL POWER</strong> </para>
 
+using UnityEngine;
+
+/// <para><strong>SPECIAL POWER</strong> </para>
 public class GodWill : Power
 {
     public GodWill()
@@ -13,6 +15,24 @@ public class GodWill : Power
 
     public override void UsePower(Pikomon user, Pikomon target)
     {
-        throw new System.NotImplementedException();
+
+        if (CurrentCharges > 0)
+        {
+            if (!Hit()) return;
+            Debug.Log($"{Name} used on {user.Name}!");
+            user.Powers.ForEach(p =>
+            {
+                if (p is not GodWill)
+                {
+                    p.AddCharge();
+                }
+            });
+            Debug.Log($"{user.Name} has gained a charge for each of its powers.");
+            CurrentCharges--;
+        }
+        else
+        {
+            Debug.Log($"{Name} is out of charges!");
+        }
     }
 }

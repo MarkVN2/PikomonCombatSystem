@@ -21,12 +21,12 @@ public class Madoimon : Pikomon
         Speed = 100f;
         SpiritualAttack = 5f;
         SpiritualDefense = 0f;
-        Powers = new List<System.Type>
+        Powers = new List<Power>
         {
-            typeof(BulletBarrage),
-            typeof(WallOfFortune),
-            typeof(WindBash),
-            typeof(TenPalms)
+            new BulletBarrage(),
+            new WallOfFortune(),
+            new WindBash(),
+            new TenPalms()
         };
     }
     public static Madoimon CreateRuntimeMadoimon(string customName)

@@ -22,12 +22,12 @@ public class Aquamon : Pikomon
         Speed = 35f;
         SpiritualAttack = 40f;
         SpiritualDefense = 45f;
-        Powers = new List<System.Type>
+        Powers = new List<Power>
         {
-            typeof(RejuvenscentWaters),
-            typeof(SpiralWhip),
-            typeof(WaterSplash),
-            typeof(BloodManipulation)
+            new RejuvenscentWaters(),
+            new SpiralWhip(),
+            new WaterSplash(),
+            new BloodManipulation()
         };
     }
 

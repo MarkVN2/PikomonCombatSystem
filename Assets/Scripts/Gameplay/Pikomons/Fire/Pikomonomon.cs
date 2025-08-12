@@ -22,12 +22,12 @@ public class Pikomonomon : Pikomon
         Speed = 50f;
         SpiritualAttack = 50f;
         SpiritualDefense = 40f;
-        Powers = new List<System.Type>
+        Powers = new List<Power>
         {
-            typeof(FieryStorm),
-            typeof(Gamble),
-            typeof(Scorching),
-            typeof(GodWill)
+            new FieryStorm(),
+            new Gamble(),
+            new Scorching(),
+            new GodWill()
         };
     }
     public static Pikomonomon CreateRuntimePikomonomon(string customName)

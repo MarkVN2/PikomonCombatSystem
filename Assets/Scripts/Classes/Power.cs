@@ -36,6 +36,13 @@ public abstract class Power
         float TotalDamage = (BaseDamage + Damage) * weaknessMultiplier;
         return TotalDamage;
     }
+    public void AddCharge()
+    {
+        if (CurrentCharges < MaxCharges)
+        {
+            CurrentCharges++;
+        }
+    }
     public bool Hit()
     {
         if (Random.value > HitChance)

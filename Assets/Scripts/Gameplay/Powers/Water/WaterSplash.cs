@@ -6,7 +6,7 @@ public class WaterSplash : Power
     {
         Name = "Water Splash";
         Element = new Water();
-        DamageType = IDamageType.Physical;
+        DamageType = IDamageType.Spiritual;
         HitChance = 0.7f;
         MaxCharges = 4;
         CurrentCharges = 4;
@@ -19,7 +19,7 @@ public class WaterSplash : Power
             float damage = CalculateDamage(user, target);
             Debug.Log($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
             if (!Hit()) return;
-            target.takeDamage(damage);
+            target.TakeDamage(damage);
             Debug.Log($"{Name} used on {target.Name}!");
             CurrentCharges--;
         }

@@ -18,13 +18,12 @@ public class Helmhon : Pikomon
         Speed = 86f;
         SpiritualAttack = 55f;
         SpiritualDefense = 40f;
-        Powers = new List<System.Type>
+        Powers = new List<Power>
         {
-            typeof(FieryStorm),
-            typeof(RestoringFlame),
-            typeof(SuffocatingFlame),
-            typeof(BloodManipulation)
-
+            new FieryStorm(),
+            new RestoringFlame(),
+            new SuffocatingFlame(),
+            new BloodManipulation()
         };
     }
 

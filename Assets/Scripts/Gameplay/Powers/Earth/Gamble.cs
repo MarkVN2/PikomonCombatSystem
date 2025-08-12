@@ -34,7 +34,7 @@ public class Gamble : Power
                 Debug.Log("Good Luck next time");
                 return;
             }
-            target.takeDamage(damage);
+            target.TakeDamage(damage);
             Debug.Log($"{Name} used on {target.Name}!");
             CurrentCharges--;
         }

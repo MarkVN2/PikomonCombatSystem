@@ -1,32 +1,27 @@
-
 using UnityEngine;
 
-public class TenPalms : Power
+public class TreeShield : Power
 {
-    public TenPalms()
+    public TreeShield()
     {
-        Name = "Ten Palms";
+        Name = "Tree Shield";
         Element = new Earth();
         DamageType = IDamageType.Physical;
-        HitChance = 0.75f;
-        MaxCharges = 2;
-        CurrentCharges = 2;
+        HitChance = 1.0f;
+        MaxCharges = 3;
+        CurrentCharges = 3;
     }
 
     public override void UsePower(Pikomon user, Pikomon target)
     {
         if (CurrentCharges > 0)
         {
-            float damage = CalculateDamage(user, target);
+            int damage = (int)CalculateDamage(user, target);
             Debug.Log($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
             if (!Hit()) return;
             target.TakeDamage(damage);
-            Debug.Log($"{Name} used on {target.Name}!");
+            user.AddEffect(new WoodShield(user));
             CurrentCharges--;
-        }
-        else
-        {
-            Debug.Log($"{Name} is out of charges!");
         }
     }
 }

@@ -1,7 +1,9 @@
 public enum IGameState
 {
-    MainMenu,
-    InGame,
-    Paused,
-    GameOver
+    Initializing,
+    Restarting,
+    CPU_Turn,
+    Player_Turn,
+    Effect_Turn,
+    Game_Over
 }

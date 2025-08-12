@@ -1,6 +1,8 @@
-public enum IElement{
+public enum IElement
+{
     Fire,
     Water,
     Earth,
-    Wind
+    Wind,
+    Neutral
 }

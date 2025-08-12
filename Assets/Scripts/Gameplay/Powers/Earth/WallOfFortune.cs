@@ -1,8 +1,31 @@
+using System.Linq;
+using UnityEngine;
+
 /// <para><strong>SPECIAL POWER</strong> </para>
 public class WallOfFortune : Power
 {
+
+    public WallOfFortune()
+    {
+        Name = "Wall of Fortune";
+        Element = new Earth();
+        HitChance = 1f;
+        MaxCharges = 1;
+        CurrentCharges = 1;
+    }
+
     public override void UsePower(Pikomon user, Pikomon target)
     {
-        throw new System.NotImplementedException();
+        if (CurrentCharges > 0)
+        {
+            if (!Hit()) return;
+            Debug.Log($"{Name} used on {user.Name}!");
+            user.AddEffect(new GodlyAccuracy(user));
+            CurrentCharges--;
+        }
+        else
+        {
+            Debug.Log($"{Name} is out of charges!");
+        }
     }
 }

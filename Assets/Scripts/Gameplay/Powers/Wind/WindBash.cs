@@ -32,7 +32,7 @@ public class WindBash : Power
             float damage = CalculateDamage(user, target);
             Debug.Log($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
             if (!Hit()) return;
-            target.takeDamage(damage);
+            target.TakeDamage(damage);
             Debug.Log($"{Name} used on {target.Name}!");
             CurrentCharges--;
         }

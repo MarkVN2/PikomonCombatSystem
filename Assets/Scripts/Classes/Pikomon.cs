@@ -141,13 +141,18 @@ public abstract class Pikomon : ScriptableObject
         set { spiritualDefense = value; }
     }
     [SerializeField]
-    private List<System.Type> powers;
-    public List<System.Type> Powers
+    private List<Power> powers;
+    public List<Power> Powers
     {
         get { return powers; }
         set { powers = value; }
     }
     public Element Element { get; set; }
+
+[SerializeField]
+private List<Effect> activeEffects = new List<Effect>();
+public List<Effect> ActiveEffects { get => activeEffects; set => activeEffects = value; }
+
     public void DisplayInfo()
     {
         Debug.Log($@"Pikomon Name: {Name},
@@ -161,37 +166,54 @@ public abstract class Pikomon : ScriptableObject
         Spiritual Attack: {SpiritualAttack},
         Spiritual Defense: {SpiritualDefense},
         Powers: {string.Join(", ", Powers?.Select(p => p.Name) ?? new string[0])},
+        Active Effects: {string.Join(", ", ActiveEffects?.Select(e => e.Name + " (Dur: " + e.Duration + ")") ?? new string[0])},
         Element: {Element}");
+    }
+    public void AddEffect(Effect effect)
+    {
+        activeEffects.Add(effect);
+        effect.ApplyEffect();
+    }
+
+    public void ProcessEffects()
+    {
+        for (int i = activeEffects.Count - 1; i >= 0; i--)
+        {
+            Effect effect = activeEffects[i];
+            effect.ProcessEffect();
+        }
+    }
+    public void ActivateEffect(Effect effect)
+    {
+        effect.ApplyEffect();
     }
     public void AddPower(Power power)
     {
         if (Powers == null)
         {
-            Powers = new List<System.Type>();
+            Powers = new List<Power>();
         }
-        Powers.Add(power.GetType());
+        Powers.Add(power);
     }
     public void RemovePower(Power power)
     {
-        if (Powers != null && Powers.Contains(power.GetType()))
+        if (Powers != null && Powers.Contains(power))
         {
-            Powers.Remove(power.GetType());
+            Powers.Remove(power);
         }
     }
     public bool HasPower<T>() where T : Power
     {
-        return Powers.Contains(typeof(T));
+        return Powers.Any(p => p is T);
     }
-
     public void UsePower<T>(Pikomon target) where T : Power, new()
     {
         if (HasPower<T>())
         {
-            var power = new T();
-            power.UsePower(this, target);
+            Powers.OfType<T>().First().UsePower(this, target);
         }
     }
-    public void takeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         Health -= damage;
         if (Health < 0) Health = 0;

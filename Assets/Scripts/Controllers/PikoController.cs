@@ -6,7 +6,7 @@ public class PikoController : MonoBehaviour
     [Header("Pikomon References")]
     [Tooltip("Assign any type of Pikomon (Himon, Aquamon, etc.) from your ScriptableObject assets")]
     [SerializeField]
-    public Pikomon pikomon;
+    private Pikomon pikomon;
     [Header("Runtime Creation")]
     [Tooltip("Enter a custom name for the Pikomon to be created at runtime")]
     public string customName = "Pikomon";
@@ -19,14 +19,6 @@ public class PikoController : MonoBehaviour
     {
         if (pikomon != null)
         {
-            // Debug what we're working with
-            // Debug.Log($"Original Pikomon: Species={pikomon.Species}, Name={pikomon.Name}");
-
-
-            // pikomonName = pikomon.Name;
-            // Debug.Log($"Runtime Pikomon: {pikomon.Species} named {pikomon.Name}");
-
-            // Add null checks before DisplayInfo
             if (ValidatePikomon(pikomon))
             {
                 pikomon.DisplayInfo();
@@ -41,7 +33,10 @@ public class PikoController : MonoBehaviour
             Debug.LogWarning("No Pikomon assigned to PikoController");
         }
     }
-
+    public Pikomon GetPikomon()
+    {
+        return pikomon;
+    }
     /// <summary>
     /// Creates a runtime copy of the Pikomon instead of modifying the original asset
     /// </summary>
@@ -72,7 +67,7 @@ public class PikoController : MonoBehaviour
             copy.SpiritualAttack = original.SpiritualAttack;
             copy.SpiritualDefense = original.SpiritualDefense;
             copy.Element = original.Element;
-            copy.Powers = new System.Collections.Generic.List<System.Type>(original.Powers);
+            copy.Powers = new System.Collections.Generic.List<Power>(original.Powers);
         }
 
         return copy;

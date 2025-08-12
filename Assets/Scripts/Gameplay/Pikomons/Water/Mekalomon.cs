@@ -21,12 +21,12 @@ public class Mekalomon : Pikomon
         Speed = 15f;
         SpiritualAttack = 40f;
         SpiritualDefense = 60f;
-        Powers = new List<System.Type>
+        Powers = new List<Power>
         {
-            typeof(RejuvenscentWaters),
-            typeof(RestoringFlame),
-            typeof(WindBash),
-            typeof(BloodManipulation)
+            new RejuvenscentWaters(),
+            new RestoringFlame(),
+            new WindBash(),
+            new BloodManipulation()
         };
     }
     public static Mekalomon CreateRuntimeMekalomon(string customName)
