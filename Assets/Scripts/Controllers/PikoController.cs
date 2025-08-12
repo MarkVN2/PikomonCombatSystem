@@ -15,6 +15,16 @@ public class PikoController : MonoBehaviour
     [SerializeField]
     private string pikomonName;
 
+    [SerializeField]
+    private int uniqueInstanceId;
+    public int UniqueId => uniqueInstanceId;
+    
+    private void Awake()
+    {
+        uniqueInstanceId = System.Guid.NewGuid().GetHashCode();
+        if (uniqueInstanceId < 0) uniqueInstanceId = -uniqueInstanceId; 
+    }
+    
     private void Start()
     {
         if (pikomon != null)
@@ -37,6 +47,16 @@ public class PikoController : MonoBehaviour
     {
         return pikomon;
     }
+    public void SetPikomon(Pikomon newPikomon)
+{
+    pikomon = newPikomon;
+    pikomonName = newPikomon?.Name;
+    
+    if (ValidatePikomon(pikomon))
+    {
+        pikomon.DisplayInfo();
+    }
+}
     /// <summary>
     /// Creates a runtime copy of the Pikomon instead of modifying the original asset
     /// </summary>
@@ -110,4 +130,5 @@ public class PikoController : MonoBehaviour
 
         return true;
     }
+
 }

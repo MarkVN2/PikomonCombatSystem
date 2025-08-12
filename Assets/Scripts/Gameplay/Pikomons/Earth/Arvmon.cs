@@ -27,4 +27,8 @@ public class Arvmon : Pikomon
             new BulletBarrage()
         };
     }
+    public static Arvmon CreateRuntimeArvmon(string customName)
+    {
+        return CreateRuntimePikomon<Arvmon>(customName);
+    }
 }

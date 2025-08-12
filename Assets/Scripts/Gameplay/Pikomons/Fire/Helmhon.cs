@@ -4,6 +4,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Helmhon", menuName = "Pikomon/Fire/Helmhon")]
 public class Helmhon : Pikomon
 {
+    public Helmhon()
+    {
+        InitializeDefaults();
+    }
     protected override void InitializeDefaults()
     {
         Name = "Helmhon";

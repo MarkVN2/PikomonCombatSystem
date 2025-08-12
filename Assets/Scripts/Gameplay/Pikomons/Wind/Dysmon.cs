@@ -11,7 +11,7 @@ public class Dysmon : Pikomon
     {
         Name = "Dysmon";
         Species = "Dysmon";
-        Element = new Wind(); 
+        Element = new Wind();
         Health = 60f;
         MaxHealth = Health;
         Height = 0.2f;
@@ -28,5 +28,9 @@ public class Dysmon : Pikomon
             new WallOfFortune(),
             new Whirlwind()
         };
+    }
+    public static Dysmon CreateRuntimeDysmon(string customName)
+    {
+        return CreateRuntimePikomon<Dysmon>(customName);
     }
 }

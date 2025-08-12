@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Megitmon", menuName = "Pikomon/Wind/Megitmon")]
 public class Megitmon : Pikomon
 {
-  public Megitmon()
+    public Megitmon()
     {
         InitializeDefaults();
     }
@@ -11,7 +11,7 @@ public class Megitmon : Pikomon
     {
         Name = "Megitmon";
         Species = "Megitmon";
-        Element = new Wind(); 
+        Element = new Wind();
         Health = 110f;
         MaxHealth = Health;
         Height = 1f;
@@ -28,5 +28,9 @@ public class Megitmon : Pikomon
             new Tornado(),
             new Scratch()
         };
+    }
+    public static Megitmon CreateRuntimeMegitmon(string customName)
+    {
+        return CreateRuntimePikomon<Megitmon>(customName);
     }
 }   

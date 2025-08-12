@@ -3,10 +3,20 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public IGameState CurrentGameState { get; private set; }
-    public PikoController player1;
-    public PikoController cpu;
+
+    [Header("UI")]
+    [SerializeField] private PikomonHUD playerHUD;
+    [Header("Battle Setup")]
+    public Transform playerSpawnPoint;
+    public Transform cpuSpawnPoint;
+
+    private PikoController playerController;
+    private PikoController cpuController;
     private Pikomon cpu_pikomon;
     private Pikomon player_pikomon;
+    public Pikomon GetCPUPikomon() => cpu_pikomon;
+    public Pikomon GetPlayerPikomon() => player_pikomon;
+
     private void Awake()
     {
         if (Instance == null)
@@ -22,11 +32,63 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-                cpu_pikomon = cpu.GetPikomon();
-                player_pikomon = player1.GetPikomon();
+        InitializeBattle();
+    }
+    private void InitializeBattle()
+    {
+        CleanupBattle();
+
+        Vector3 playerPos = playerSpawnPoint ? playerSpawnPoint.position : Vector3.left * 3f;
+        Vector3 cpuPos = cpuSpawnPoint ? cpuSpawnPoint.position : Vector3.right * 3f;
+
+        var battlePair = PikomonFactory.SpawnBattlePair(playerPos, cpuPos);
+        playerController = battlePair.player;
+        cpuController = battlePair.cpu;
+
+        if (playerController != null && cpuController != null)
+        {
+            player_pikomon = playerController.GetPikomon();
+            cpu_pikomon = cpuController.GetPikomon();
+
+            if (playerHUD != null)
+            {
+                playerHUD.Initialize(playerController);
+            }
+
+            Debug.Log($"Battle initialized! Player: {player_pikomon.Name} vs CPU: {cpu_pikomon.Name}");
+            ChangeGameState(IGameState.Initializing);
+        }
+        else
+        {
+            Debug.LogError("Failed to spawn Pikomons");
+        }
+    }
+    private void CleanupBattle()
+    {
+        if (playerController != null)
+        {
+            Destroy(playerController.gameObject);
+            playerController = null;
+        }
+
+        if (cpuController != null)
+        {
+            Destroy(cpuController.gameObject);
+            cpuController = null;
+        }
+
+        player_pikomon = null;
+        cpu_pikomon = null;
     }
     void Update()
     {
+        if (player_pikomon == null || cpu_pikomon == null)
+            return;
+
+        if (playerHUD != null)
+        {
+            playerHUD.RefreshDisplay();
+        }
         switch (CurrentGameState)
         {
             case IGameState.Initializing:
@@ -74,5 +136,11 @@ public class GameManager : MonoBehaviour
     {
         CurrentGameState = newState;
         Debug.Log("Game State changed to: " + newState);
+    }
+
+    [ContextMenu("Start New Battle")]
+    public void StartNewBattle()
+    {
+        InitializeBattle();
     }
 }

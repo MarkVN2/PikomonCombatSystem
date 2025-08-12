@@ -90,11 +90,19 @@ public abstract class Pikomon : ScriptableObject
     }
 
     [SerializeField]
-    private Sprite sprite;
-    public Sprite Sprite
+    private Sprite frontSprite;
+    public Sprite FrontSprite
     {
-        get { return sprite; }
-        set { sprite = value; }
+        get { return frontSprite; }
+        set { frontSprite = value; }
+    }
+
+    [SerializeField]
+    private Sprite backSprite;
+    public Sprite BackSprite
+    {
+        get { return backSprite; }
+        set { backSprite = value; }
     }
     [SerializeField]
     private float health;
@@ -156,9 +164,11 @@ public List<Effect> ActiveEffects { get => activeEffects; set => activeEffects =
     public void DisplayInfo()
     {
         Debug.Log($@"Pikomon Name: {Name},
+        Species: {Species},
         Id: {Id},
         Gender: {Gender},
-        Sprite: {Sprite},
+        FrontSprite: {FrontSprite},
+        BackSprite: {BackSprite},
         Health: {Health},
         Attack: {Attack},
         Defense: {Defense},
