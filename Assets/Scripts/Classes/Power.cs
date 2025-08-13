@@ -8,11 +8,11 @@ public abstract class Power
     private Element element;
     public Element Element { get => element; set => element = value; }
     private float baseDamage;
-    public float BaseDamage { get => baseDamage; set => baseDamage = value; }
+    protected float BaseDamage { get => baseDamage; set => baseDamage = value; }
     private IDamageType damageType;
     public IDamageType DamageType { get => damageType; set => damageType = value; }
     private float hitChance;
-    public float HitChance { get => hitChance; set => hitChance = value; }
+    protected float HitChance { get => hitChance; set => hitChance = value; }
     private float maxCharges;
     public float MaxCharges { get => maxCharges; set => maxCharges = value; }
     private float currentCharges;

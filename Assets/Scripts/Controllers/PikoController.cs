@@ -9,7 +9,12 @@ public class PikoController : MonoBehaviour
     private Pikomon pikomon;
     [Header("Runtime Creation")]
     [Tooltip("Enter a custom name for the Pikomon to be created at runtime")]
-    public string customName = "Pikomon";
+    [SerializeField] private string customName = "Pikomon";
+    public string CustomName 
+    { 
+        get => customName; 
+        set => customName = value; 
+    }
 
     [Header("Runtime Info")]
     [SerializeField]

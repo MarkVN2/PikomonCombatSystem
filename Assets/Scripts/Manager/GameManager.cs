@@ -10,10 +10,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PikomonHUD playerHUD;
     [SerializeField] private BattleLogUI battleLogUI;
     [SerializeField] private Button restartButton;
-    
+
     [Header("Battle Setup")]
-    public Transform playerSpawnPoint;
-    public Transform cpuSpawnPoint;
+    [SerializeField] private Transform playerSpawnPoint;
+    [SerializeField] private Transform cpuSpawnPoint;
+
+    public Transform PlayerSpawnPoint => playerSpawnPoint;
+    public Transform CpuSpawnPoint => cpuSpawnPoint;
 
     private PikoController playerController;
     private PikoController cpuController;
