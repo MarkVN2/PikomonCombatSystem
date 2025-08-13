@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Himon
   m_EditorClassIdentifier: 
   species: Himon
-  pikomonName: Frost
+  pikomonName: Himon
   id: 7634
   gender: 0
   height: 1.5
   weight: 50
   frontSprite: {fileID: 5139708371754970345, guid: a415910f20ca3d544bd22f43e25aa867, type: 3}
   backSprite: {fileID: 1055244251750977869, guid: d4296ff22d0fdf54abe61e03780ed530, type: 3}
-  health: 87
+  health: 100
   maxHealth: 100

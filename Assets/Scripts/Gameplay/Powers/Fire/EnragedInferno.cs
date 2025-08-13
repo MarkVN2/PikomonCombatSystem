@@ -16,12 +16,12 @@ public class EnragedInferno : Power
     {
         if (CurrentCharges > 0)
         {
+            CurrentCharges--;
             if (!Hit()) return;
             Debug.Log($"{user.Name} uses {Name} on {user.Name}!");
             user.AddEffect(new Enraged(user));
             Debug.Log($"{Name} used on {target.Name}!");
             target.AddEffect(new Burn(target));
-            CurrentCharges--;
         }
         else
         {

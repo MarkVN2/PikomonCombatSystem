@@ -29,8 +29,4 @@ public class Megitmon : Pikomon
             new Scratch()
         };
     }
-    public static Megitmon CreateRuntimeMegitmon(string customName)
-    {
-        return CreateRuntimePikomon<Megitmon>(customName);
-    }
 }   

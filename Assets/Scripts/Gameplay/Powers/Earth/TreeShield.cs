@@ -16,12 +16,12 @@ public class TreeShield : Power
     {
         if (CurrentCharges > 0)
         {
+            CurrentCharges--;
             int damage = (int)CalculateDamage(user, target);
             Debug.Log($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
             if (!Hit()) return;
             target.TakeDamage(damage);
             user.AddEffect(new WoodShield(user));
-            CurrentCharges--;
         }
     }
 }

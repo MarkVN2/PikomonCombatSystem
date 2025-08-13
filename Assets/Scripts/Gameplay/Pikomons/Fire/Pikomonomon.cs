@@ -14,7 +14,7 @@ public class Pikomonomon : Pikomon
         Species = "Pikomonomon";
         Element = new Fire();
         Health = 150f;
-        MaxHealth = Health;
+        MaxHealth = 150f;
         Height = 0.7f;
         Weight = 25f;
         Attack = 25f;
@@ -29,9 +29,5 @@ public class Pikomonomon : Pikomon
             new Scorching(),
             new GodWill()
         };
-    }
-    public static Pikomonomon CreateRuntimePikomonomon(string customName)
-    {
-        return CreateRuntimePikomon<Pikomonomon>(customName);
     }
 }

@@ -31,9 +31,4 @@ public class Himon : Pikomon
             new TenPalms(),
         };
     }
-
-    public static Himon CreateRuntimeHimon(string customName)
-    {
-        return CreateRuntimePikomon<Himon>(customName);
-    }
 }

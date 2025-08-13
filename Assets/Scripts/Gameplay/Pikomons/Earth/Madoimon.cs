@@ -29,8 +29,4 @@ public class Madoimon : Pikomon
             new TenPalms()
         };
     }
-    public static Madoimon CreateRuntimeMadoimon(string customName)
-    {
-        return CreateRuntimePikomon<Madoimon>(customName);
-    }
 }

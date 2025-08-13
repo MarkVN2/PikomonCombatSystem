@@ -29,8 +29,4 @@ public class Dysmon : Pikomon
             new Whirlwind()
         };
     }
-    public static Dysmon CreateRuntimeDysmon(string customName)
-    {
-        return CreateRuntimePikomon<Dysmon>(customName);
-    }
 }

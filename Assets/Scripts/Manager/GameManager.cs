@@ -96,10 +96,9 @@ public class GameManager : MonoBehaviour
                 ChangeGameState(IGameState.Player_Turn);
                 break;
             case IGameState.CPU_Turn:
-
+                RandomCPUAttack();
                 break;
             case IGameState.Player_Turn:
-
                 break;
             case IGameState.Effect_Turn:
                 cpu_pikomon.ProcessEffects();
@@ -135,12 +134,16 @@ public class GameManager : MonoBehaviour
     public void ChangeGameState(IGameState newState)
     {
         CurrentGameState = newState;
-        Debug.Log("Game State changed to: " + newState);
+            Debug.Log("Game State changed to: " + newState);
     }
 
     [ContextMenu("Start New Battle")]
     public void StartNewBattle()
     {
         InitializeBattle();
+    }
+    public void RandomCPUAttack() {
+        cpu_pikomon.Powers[Random.Range(0, cpu_pikomon.Powers.Count)].UsePower(cpu_pikomon,player_pikomon);
+        ChangeGameState(IGameState.Effect_Turn);
     }
 }

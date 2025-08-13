@@ -14,7 +14,7 @@ public class Helmhon : Pikomon
         Species = "Helmhon";
         Element = new Fire();
         Health = 120f;
-        MaxHealth = Health;
+        MaxHealth = 120f;
         Height = 1.0f;
         Weight = 46f;
         Attack = 45f;
@@ -29,10 +29,5 @@ public class Helmhon : Pikomon
             new Scorching(),
             new EnragedInferno()
         };
-    }
-
-    public static Helmhon CreateRuntimeHelmhon(string customName)
-    {
-        return CreateRuntimePikomon<Helmhon>(customName);
     }
 }

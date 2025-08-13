@@ -30,9 +30,4 @@ public class Aquamon : Pikomon
             new BloodManipulation()
         };
     }
-
-    public static Aquamon CreateRuntimeAquamon(string customName)
-    {
-        return CreateRuntimePikomon<Aquamon>(customName);
-    }
 }

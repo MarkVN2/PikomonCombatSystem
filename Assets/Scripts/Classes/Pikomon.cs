@@ -33,10 +33,18 @@ public abstract class Pikomon : ScriptableObject
     /// <summary>
     /// Creates a runtime instance of any Pikomon type with a custom name
     /// </summary>
+    public void Initialize()
+    {
+        InitializeDefaults();
+    }
     public static T CreateRuntimePikomon<T>(string customName) where T : Pikomon
     {
         var pikomon = CreateInstance<T>();
-        pikomon.Name = customName;
+        pikomon.Initialize();
+        if (!string.IsNullOrEmpty(customName))
+        {
+            pikomon.Name = customName;
+        }
         return pikomon;
     }
     [SerializeField]

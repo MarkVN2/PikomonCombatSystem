@@ -6,44 +6,59 @@ using System.Linq;
 
 public class PikomonHUD : MonoBehaviour
 {
-    [Header("Pikomon Info Display")]
+    [Header("Pikomon Player Info Display")]
     [SerializeField] private TextMeshProUGUI pikomonNameText;
-    [SerializeField] private Slider healthSlider;
+    [SerializeField] private GameObject playerHealthSlider;
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private Image pikomonPortrait;
     
     [Header("Abilities Panel")]
     [SerializeField] private Transform abilitiesContainer;
     [SerializeField] private GameObject abilityButtonPrefab;
-    
+
+    [Header("CPU Pikomon")]
+    [SerializeField] private GameObject cpuHealthSlider;
+    [SerializeField] private TextMeshProUGUI cpuNameText;
+    [SerializeField] private TextMeshProUGUI cpuHealthText;
+
+    [Header("BattleInfo")]
+
     private PikoController currentPikoController;
+    private Pikomon cpuPikomon;
     private List<Button> abilityButtons = new List<Button>();
     
     public void Initialize(PikoController playerController)
     {
         currentPikoController = playerController;
+        cpuPikomon = GameManager.Instance.GetCPUPikomon();
         UpdateDisplay();
         CreateAbilityButtons();
     }
     
     public void UpdateDisplay()
     {
-        if (currentPikoController?.GetPikomon() == null) return;
+        if (currentPikoController?.GetPikomon() == null || cpuPikomon == null) return;
         
-        var pikomon = currentPikoController.GetPikomon();
+        Pikomon pikomon = currentPikoController.GetPikomon();
         
         if (pikomonNameText != null)
             pikomonNameText.text = pikomon.Name;
-        
-        if (healthSlider != null)
+        if (cpuNameText != null)
+            cpuNameText.text = cpuPikomon.Name;
+
+        if (playerHealthSlider != null)
         {
-            healthSlider.maxValue = pikomon.MaxHealth;
-            healthSlider.value = pikomon.Health;
+            playerHealthSlider.GetComponent<LifeLevel>().SetHealthPercentage(pikomon.Health / pikomon.MaxHealth);
         }
-        
+        if (cpuHealthSlider != null)
+        {
+            cpuHealthSlider.GetComponent<LifeLevel>().SetHealthPercentage(cpuPikomon.Health / cpuPikomon.MaxHealth);
+        }
+
         if (healthText != null)
             healthText.text = $"{pikomon.Health:F0}/{pikomon.MaxHealth:F0}";
-        
+        if (cpuHealthText != null)
+            cpuHealthText.text =$"{cpuPikomon.Health:F0}/{cpuPikomon.MaxHealth:F0}" ;
         if (pikomonPortrait != null && pikomon.BackSprite != null)
             pikomonPortrait.sprite = pikomon.BackSprite;
     }
@@ -79,32 +94,38 @@ public class PikomonHUD : MonoBehaviour
             }
         }
     }
-    
+
     private void SetupAbilityButton(Button button, Power power)
     {
-      TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
-        if (buttonText != null)
+        PowerButtonController controller = button.GetComponent<PowerButtonController>();
+        if (controller != null)
         {
-            string textToSet = $"{power.Name}\n({power.CurrentCharges}/{power.MaxCharges})";
-            buttonText.text = textToSet;
-            Debug.Log($"Set button text to: {textToSet}");
+            controller.SetAbilityName(power.Name);
+            if (power.MaxCharges <= 0)
+            {
+                controller.SetCharges("∞");
+            }
+            else {
+                controller.SetCharges($"{power.CurrentCharges}/{power.MaxCharges}");
+            }
+        }
+        else 
+        {
+            Debug.LogError("No Controller Found on Button!");
+        }
+
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() => OnAbilityClicked(power));
+
+        if (power.MaxCharges <= 0)
+        {
+            button.interactable = true;
         }
         else
         {
-            Debug.LogError($"No TextMeshProUGUI found in button for {power.Name}");
-            
-            Text legacyText = button.GetComponentInChildren<Text>();
-            if (legacyText != null)
-            {
-                legacyText.text = $"{power.Name}\n({power.CurrentCharges}/{power.MaxCharges})";
-                Debug.Log("Used legacy Text component instead");
-            }
+            button.interactable = power.CurrentCharges > 0 && power.MaxCharges > 0;
         }
-        button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(() => OnAbilityClicked(power));
-        
-        button.interactable = power.CurrentCharges > 0;
-    }    
+    }
     
    private void OnAbilityClicked(Power power)
 {
@@ -115,40 +136,56 @@ public class PikomonHUD : MonoBehaviour
     }
     
     Pikomon player = currentPikoController.GetPikomon();
-    Pikomon cpuPikomon = GameManager.Instance.GetCPUPikomon();
     
     Power playerPower = player.Powers.FirstOrDefault(p => p.GetType() == power.GetType());
     
-    if (playerPower != null && playerPower.CurrentCharges > 0)
+    if (playerPower != null)
     {
-        playerPower.UsePower(player, cpuPikomon);
-        Debug.Log($"Player uses {playerPower.Name}!");
+        bool canUse = (playerPower.MaxCharges <= 0) || (playerPower.CurrentCharges > 0);
         
-        UpdateDisplay();
-        CreateAbilityButtons(); 
-        GameManager.Instance.ChangeGameState(IGameState.CPU_Turn);
+        if (canUse)
+        {
+            playerPower.UsePower(player, cpuPikomon);
+            Debug.Log($"Player uses {playerPower.Name}!");
+            
+            UpdateDisplay();
+            CreateAbilityButtons(); 
+            GameManager.Instance.ChangeGameState(IGameState.CPU_Turn);
+        }
+        else
+        {
+            Debug.Log($"Power {power.Name} has no charges left!");
+        }
     }
     else
     {
-        Debug.Log($"Power {power.Name} has no charges left or not found!");
+        Debug.Log($"Power {power.Name} not found!");
     }
 }
     public void RefreshDisplay()
     {
         UpdateDisplay();
-        
+
         for (int i = 0; i < abilityButtons.Count && i < currentPikoController.GetPikomon().Powers.Count; i++)
         {
             var power = currentPikoController.GetPikomon().Powers[i];
             var button = abilityButtons[i];
-            
-            TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
-            if (buttonText != null)
+
+            PowerButtonController controller = button.GetComponent<PowerButtonController>();
+            if (controller != null)
             {
-                buttonText.text = $"{power.Name}\n({power.CurrentCharges}/{power.MaxCharges})";
+                controller.SetAbilityName(power.Name);
+                if (power.MaxCharges <= 0)
+                {
+                    controller.SetCharges("∞");
+                    button.interactable = true; // Always usable
+                }
+                else
+                {
+                    controller.SetCharges($"{power.CurrentCharges}/{power.MaxCharges}");
+                    button.interactable = power.CurrentCharges > 0;
+                }
             }
-            
-            button.interactable = power.CurrentCharges > 0;
         }
     }
 }

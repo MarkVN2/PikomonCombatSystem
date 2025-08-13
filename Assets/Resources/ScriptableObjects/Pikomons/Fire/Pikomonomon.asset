@@ -18,6 +18,7 @@ MonoBehaviour:
   gender: 0
   height: 0.7
   weight: 25
-  sprite: {fileID: 0}
+  frontSprite: {fileID: 0}
+  backSprite: {fileID: 0}
   health: 150
   maxHealth: 150

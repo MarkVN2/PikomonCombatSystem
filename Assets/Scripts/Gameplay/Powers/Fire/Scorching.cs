@@ -17,10 +17,10 @@ public class Scorching : Power
     {
         if (CurrentCharges > 0)
         {
+            CurrentCharges--;
             Debug.Log($"{Name} used on {user.Name}!");
             if (!Hit()) return;
             target.AddEffect(new Burn(target));
-            CurrentCharges--;
         }
         else
         {

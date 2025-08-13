@@ -13,7 +13,7 @@ public class Rokumon : Pikomon
         Species = "Rokumon";
         Element = new Earth();
         Health = 65f;
-        MaxHealth = Health;
+        MaxHealth = 65f;
         Height = 1.2f;
         Weight = 70f;
         Attack = 60f;
@@ -28,9 +28,5 @@ public class Rokumon : Pikomon
             new Scorching(),
             new BulletBarrage()
         };
-    }
-    public static Rokumon CreateRuntimeRokumon(string customName)
-    {
-        return CreateRuntimePikomon<Rokumon>(customName);
     }
 }

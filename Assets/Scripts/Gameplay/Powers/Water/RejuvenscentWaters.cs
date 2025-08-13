@@ -31,19 +31,18 @@ public class RejuvenscentWaters : Power
 
         if (CurrentCharges > 0)
         {
+            CurrentCharges--;
             float healPercentage = Random.Range(MIN_HEAL_PERCENTAGE, MAX_HEAL_PERCENTAGE);
             float healAmount = user.Health * healPercentage;
 
             if (!Hit())
             {
                 Debug.Log($"{Name} mysteriously failed to activate!"); // Or is it
-                CurrentCharges--;
                 return;
             }
             Debug.Log($"{Name} used on {target.Name}!");
             user.Heal(healAmount);
             Debug.Log($"{user.Name} has been healed by {healAmount} points.");
-            CurrentCharges--;
         }
         else
         {

@@ -18,12 +18,46 @@ public static class PikomonFactory
         { "Mekalomon", "Prefabs/Pikomons/Water/Mekalomon" }
     };
 
+    // AI doing what it's good at, giving random things.
     private static readonly string[] RandomNames =
     {
-        "Blaze", "Aqua", "Storm", "Boulder", "Spark", "Frost", "Viper", "Thunder",
-        "Shadow", "Crimson", "Azure", "Ember", "Tsunami", "Cyclone", "Granite"
-    };
+    "Blaze", "Ember", "Inferno", "Flare", "Scorch", "Cinder", "Phoenix", "Pyre",
 
+    "Aqua", "Tsunami", "Frost", "Glacier", "Torrent", "Cascade", "Neptune", "Tidal",
+    "Ripple", "Mist", "Surge", "Arctic", "Crystal", "Marina", "Coral",
+
+    "Boulder", "Granite", "Terra", "Ridge", "Canyon", "Summit", "Stone", "Cliff",
+    "Forest", "Grove", "Moss", "Thorn", "Bramble", "Sage", "Willow",
+
+    "Storm", "Cyclone", "Tempest", "Gale", "Breeze", "Zephyr", "Hurricane", "Whirlwind",
+    "Nimbus", "Stratus", "Cumulus", "Vapor",
+
+    "Spark", "Thunder", "Lightning", "Volt", "Charge", "Static", "Plasma", "Tesla",
+    "Dynamo", "Current", "Flux",
+
+    "Shadow", "Shade", "Dusk", "Midnight", "Eclipse", "Obsidian", "Raven", "Onyx",
+    "Noir", "Umbra", "Phantom",
+
+    "Crimson", "Azure", "Radiant", "Stellar", "Nova", "Comet", "Lunar", "Solar",
+    "Prism", "Aurora", "Dawn", "Zenith",
+
+    "Viper", "Serpent", "Drake", "Wyvern", "Chimera", "Sphinx", "Griffin", "Hydra",
+    "Titan", "Golem", "Spirit", "Wraith",
+
+    "Ruby", "Sapphire", "Emerald", "Diamond", "Topaz", "Quartz", "Opal", "Amber",
+    "Jade", "Pearl", "Garnet",
+
+    "Blade", "Spear", "Shield", "Arrow", "Sword", "Lance", "Axe", "Dagger",
+
+    "Nexus", "Vortex", "Echo", "Pulse", "Rebel", "Rogue", "Hunter", "Ranger",
+    "Scout", "Guardian", "Sentinel", "Warden", "Champion", "Valor", "Honor",
+    "Fury", "Rage", "Chaos", "Order", "Balance", "Harmony", "Discord",
+    "Venom", "Toxic", "Acid", "Poison", "Antidote", "Remedy"
+    };
+    private static string GetRandomName()
+    {
+        return RandomNames[Random.Range(0, RandomNames.Length)];
+    }
     public static PikoController SpawnRandomPikomon(Vector3 position = default, bool isCPU = false)
     {
         var types = new List<string>(PrefabPaths.Keys);
@@ -55,20 +89,43 @@ public static class PikomonFactory
             return null;
         }
 
-        if (!string.IsNullOrEmpty(customName) && controller.GetPikomon() != null)
+        if (controller.GetPikomon() != null)
         {
-            controller.GetPikomon().Name = customName;
-        }
-        else if (controller.GetPikomon() != null)
-        {
-            var randomName = RandomNames[Random.Range(0, RandomNames.Length)];
-            controller.GetPikomon().Name = randomName;
+            var originalPikomon = controller.GetPikomon();
+            var runtimeCopy = CreateRuntimeCopy(originalPikomon, customName ?? GetRandomName());
+
+            if (runtimeCopy != null)
+            {
+                controller.SetPikomon(runtimeCopy);
+                Debug.Log($"Created runtime copy for {runtimeCopy.Name} with {runtimeCopy.Health}/{runtimeCopy.MaxHealth} health");
+            }
         }
 
         UpdatePikomonVisuals(instance, controller, isCPU);
         instance.name = $"{pikomonType}_{controller.UniqueId}";
 
         return controller;
+    }
+
+    private static Pikomon CreateRuntimeCopy(Pikomon original, string customName)
+    {
+        Debug.Log($"Creating runtime copy with name: '{customName}' for type: {original.GetType().Name}");
+        // ha-ha-ha-ha...not very maintenance friendly 
+        return original.GetType().Name switch
+        {
+            nameof(Himon) => Pikomon.CreateRuntimePikomon<Himon>(customName),
+            nameof(Aquamon) => Pikomon.CreateRuntimePikomon<Aquamon>(customName),
+            nameof(Pikomonomon) => Pikomon.CreateRuntimePikomon<Pikomonomon>(customName),
+            nameof(Helmhon) => Pikomon.CreateRuntimePikomon<Helmhon>(customName),
+            nameof(Dysmon) => Pikomon.CreateRuntimePikomon<Dysmon>(customName),
+            nameof(Megitmon) => Pikomon.CreateRuntimePikomon<Megitmon>(customName),
+            nameof(Arvmon) => Pikomon.CreateRuntimePikomon<Arvmon>(customName),
+            nameof(Rokumon) => Pikomon.CreateRuntimePikomon<Rokumon>(customName),
+            nameof(Madoimon) => Pikomon.CreateRuntimePikomon<Madoimon>(customName),
+            nameof(Mekalomon) => Pikomon.CreateRuntimePikomon<Mekalomon>(customName),
+            _ => throw new System.ArgumentException($"Unknown Pikomon type: {original.GetType().Name}")
+        };
+
     }
 
     private static void UpdatePikomonVisuals(GameObject instance, PikoController controller, bool isCPU)
@@ -90,7 +147,7 @@ public static class PikomonFactory
                     Debug.Log($"Player Pikomon using BackSprite: {pikomon.Name}");
                 }
                 else
-                {   
+                {
                     spriteRenderer.sprite = pikomon.FrontSprite ?? pikomon.BackSprite;
                     Debug.LogWarning($"Missing sprite for {pikomon.Name}, using fallback");
                 }
@@ -118,4 +175,4 @@ public static class PikomonFactory
         return (playerController, cpuController);
     }
 
-}   
+}

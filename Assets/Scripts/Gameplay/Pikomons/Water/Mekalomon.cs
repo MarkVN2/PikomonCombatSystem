@@ -29,8 +29,4 @@ public class Mekalomon : Pikomon
             new BloodManipulation()
         };
     }
-    public static Mekalomon CreateRuntimeMekalomon(string customName)
-    {
-        return CreateRuntimePikomon<Mekalomon>(customName);
-    }
 }

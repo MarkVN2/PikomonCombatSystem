@@ -34,6 +34,7 @@ public abstract class Power
         float Damage = DamageType == IDamageType.Physical ? user.Attack - target.Defense : user.SpiritualAttack - target.SpiritualDefense;
         float weaknessMultiplier = target.Element.CheckWeaknessAgainst(this.Element) ? 2 : target.Element.CheckStrengthAgainst(this.Element) ? 0.5f : 1;
         float TotalDamage = (BaseDamage + Damage) * weaknessMultiplier;
+        if (TotalDamage < 0) TotalDamage = 0;   
         return TotalDamage;
     }
     public void AddCharge()

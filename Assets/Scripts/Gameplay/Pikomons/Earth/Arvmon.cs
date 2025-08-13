@@ -12,13 +12,15 @@ public class Arvmon : Pikomon
         Name = "Arvmon";
         Species = "Arvmon";
         Element = new Earth();
-        Health = 100;
-        MaxHealth = 100;
-        Attack = 50;
-        Defense = 50;
-        Speed = 30;
-        SpiritualAttack = 40;
-        SpiritualDefense = 40;
+        Health = 100f;
+        MaxHealth = 100f;
+        Weight = 50f;
+        Height = 3f;
+        Attack = 50f;
+        Defense = 50f;
+        Speed = 30f;
+        SpiritualAttack = 40f;
+        SpiritualDefense = 40f;
         Powers = new List<Power>
         {
             new TreeShield(),
@@ -26,9 +28,5 @@ public class Arvmon : Pikomon
             new RejuvenscentWaters(),
             new BulletBarrage()
         };
-    }
-    public static Arvmon CreateRuntimeArvmon(string customName)
-    {
-        return CreateRuntimePikomon<Arvmon>(customName);
     }
 }

@@ -18,10 +18,10 @@ public class WallOfFortune : Power
     {
         if (CurrentCharges > 0)
         {
+            CurrentCharges--;
             if (!Hit()) return;
             Debug.Log($"{Name} used on {user.Name}!");
             user.AddEffect(new GodlyAccuracy(user));
-            CurrentCharges--;
         }
         else
         {

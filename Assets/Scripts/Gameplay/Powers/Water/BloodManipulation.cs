@@ -28,6 +28,7 @@ public class BloodManipulation : Power
     {
         if (CurrentCharges > 0)
         {
+            CurrentCharges--;
             float damage = CalculateDamage(user, target);
             Debug.Log($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
             if (!Hit()) return;
@@ -35,7 +36,6 @@ public class BloodManipulation : Power
             user.Heal(damage * 0.5f);
             Debug.Log($"{user.Name} heals for {damage * 0.5f} health!");
             Debug.Log($"{Name} used on {target.Name}!");
-            CurrentCharges--;
         }
         else
         {

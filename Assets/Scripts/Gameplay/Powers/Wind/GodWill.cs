@@ -18,6 +18,7 @@ public class GodWill : Power
 
         if (CurrentCharges > 0)
         {
+            CurrentCharges--;
             if (!Hit()) return;
             Debug.Log($"{Name} used on {user.Name}!");
             user.Powers.ForEach(p =>
@@ -28,7 +29,6 @@ public class GodWill : Power
                 }
             });
             Debug.Log($"{user.Name} has gained a charge for each of its powers.");
-            CurrentCharges--;
         }
         else
         {

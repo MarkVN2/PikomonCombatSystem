@@ -17,12 +17,12 @@ public class Tornado : Power
     {
         if (CurrentCharges > 0)
         {
+            CurrentCharges--;
             float damage = CalculateDamage(user, target);
             Debug.Log($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
             if (!Hit()) return;
             target.TakeDamage(damage);
             user.AddEffect(new Windy(user));
-            CurrentCharges--;
         }
         else
         {

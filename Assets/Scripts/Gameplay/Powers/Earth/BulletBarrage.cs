@@ -17,12 +17,12 @@ public class BulletBarrage : Power
 
         if (CurrentCharges > 0)
         {
+            CurrentCharges--;
             float damage = CalculateDamage(user, target) + ADDITIONAL_DAMAGE;
             Debug.Log($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
             if (!Hit()) return;
             target.TakeDamage(damage);
             Debug.Log($"{Name} used on {target.Name}!");
-            CurrentCharges--;
         }
         else
         {

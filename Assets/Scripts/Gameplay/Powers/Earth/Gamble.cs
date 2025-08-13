@@ -26,6 +26,7 @@ public class Gamble : Power
         if (CurrentCharges > 0)
         {
             // Special Ability: Gamble deals damage based on the target's health
+            CurrentCharges--;
             BaseDamage = target.Health * Random.Range(0.0f, 0.7f); 
             float damage = CalculateDamage(user, target);
             Debug.Log($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
@@ -36,7 +37,6 @@ public class Gamble : Power
             }
             target.TakeDamage(damage);
             Debug.Log($"{Name} used on {target.Name}!");
-            CurrentCharges--;
         }
         else
         {
