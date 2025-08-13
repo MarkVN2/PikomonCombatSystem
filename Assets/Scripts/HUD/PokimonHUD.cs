@@ -145,12 +145,9 @@ public class PikomonHUD : MonoBehaviour
         
         if (canUse)
         {
-            playerPower.UsePower(player, cpuPikomon);
-            Debug.Log($"Player uses {playerPower.Name}!");
-            
+            GameManager.Instance.PlayerAttack(playerPower);
             UpdateDisplay();
             CreateAbilityButtons(); 
-            GameManager.Instance.ChangeGameState(IGameState.CPU_Turn);
         }
         else
         {

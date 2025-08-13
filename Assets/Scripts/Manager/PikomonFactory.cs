@@ -3,6 +3,19 @@ using UnityEngine;
 
 public static class PikomonFactory
 {
+    [Header("Fallback Sprites")]
+    [SerializeField]private static Sprite fallbackFrontSprite;
+    [SerializeField]private static Sprite fallbackBackSprite;
+
+    public static void InitializeFallbacks()
+    {
+        if (fallbackFrontSprite == null)
+            fallbackFrontSprite = Resources.Load<Sprite>("Sprites/Defaults/FallbackFront");
+
+        if (fallbackBackSprite == null)
+            fallbackBackSprite = Resources.Load<Sprite>("Sprites/Defaults/FallbackBack");
+    }
+
     // I don't really think this is the ideal way to go with this.
     private static readonly Dictionary<string, string> PrefabPaths = new()
     {
@@ -16,7 +29,9 @@ public static class PikomonFactory
         { "Rokumon", "Prefabs/Pikomons/Earth/Rokumon" },
         { "Madoimon", "Prefabs/Pikomons/Earth/Madoimon" },
         { "Mekalomon", "Prefabs/Pikomons/Water/Mekalomon" }
+    
     };
+
 
     // AI doing what it's good at, giving random things.
     private static readonly string[] RandomNames =
@@ -110,8 +125,8 @@ public static class PikomonFactory
     private static Pikomon CreateRuntimeCopy(Pikomon original, string customName)
     {
         Debug.Log($"Creating runtime copy with name: '{customName}' for type: {original.GetType().Name}");
-        // ha-ha-ha-ha...not very maintenance friendly 
-        return original.GetType().Name switch
+        // ha-ha-ha-ha...not very maintenance friendly
+        Pikomon runtimeCopy = original.GetType().Name switch
         {
             nameof(Himon) => Pikomon.CreateRuntimePikomon<Himon>(customName),
             nameof(Aquamon) => Pikomon.CreateRuntimePikomon<Aquamon>(customName),
@@ -125,6 +140,14 @@ public static class PikomonFactory
             nameof(Mekalomon) => Pikomon.CreateRuntimePikomon<Mekalomon>(customName),
             _ => throw new System.ArgumentException($"Unknown Pikomon type: {original.GetType().Name}")
         };
+        if (runtimeCopy != null)
+        {
+            runtimeCopy.FrontSprite = original.FrontSprite;
+            runtimeCopy.BackSprite = original.BackSprite;
+            Debug.Log($"Copied sprites - Front: {runtimeCopy.FrontSprite != null}, Back: {runtimeCopy.BackSprite != null}");
+        }
+
+        return runtimeCopy; 
 
     }
 
@@ -136,20 +159,25 @@ public static class PikomonFactory
             var spriteRenderer = instance.GetComponent<SpriteRenderer>();
             if (spriteRenderer != null)
             {
-                if (isCPU && pikomon.FrontSprite != null)
+                Sprite spriteToUse = null;
+                
+                if (isCPU)
                 {
-                    spriteRenderer.sprite = pikomon.FrontSprite;
-                    Debug.Log($"CPU Pikomon using FrontSprite: {pikomon.Name}");
-                }
-                else if (!isCPU && pikomon.BackSprite != null)
-                {
-                    spriteRenderer.sprite = pikomon.BackSprite;
-                    Debug.Log($"Player Pikomon using BackSprite: {pikomon.Name}");
+                    Debug.Log($"Player Pikomon using {(pikomon.BackSprite != null ? "BackSprite" : "Fallback Back")}: {pikomon.Name}");
+
+                    spriteToUse = pikomon.FrontSprite ?? fallbackFrontSprite;
                 }
                 else
                 {
-                    spriteRenderer.sprite = pikomon.FrontSprite ?? pikomon.BackSprite;
-                    Debug.LogWarning($"Missing sprite for {pikomon.Name}, using fallback");
+                    Debug.Log($"Player Pikomon using {(pikomon.BackSprite != null ? "BackSprite" : "Fallback Back")}: {pikomon.Name}");
+                    spriteToUse = pikomon.BackSprite ?? fallbackBackSprite;
+                }
+
+                spriteRenderer.sprite = spriteToUse;
+
+                if (spriteRenderer.sprite == null)
+                {
+                    Debug.LogError($"No sprite available for {pikomon.Name}! Check fallback sprites.");
                 }
             }
         }

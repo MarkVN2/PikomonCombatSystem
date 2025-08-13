@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private PikomonHUD playerHUD;
+    [SerializeField] private BattleLogUI battleLogUI;
     [Header("Battle Setup")]
     public Transform playerSpawnPoint;
     public Transform cpuSpawnPoint;
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour
     private PikoController cpuController;
     private Pikomon cpu_pikomon;
     private Pikomon player_pikomon;
+    private bool cpuActionExecuted = false;
     public Pikomon GetCPUPikomon() => cpu_pikomon;
     public Pikomon GetPlayerPikomon() => player_pikomon;
 
@@ -89,6 +91,9 @@ public class GameManager : MonoBehaviour
         {
             playerHUD.RefreshDisplay();
         }
+        if (battleLogUI != null && battleLogUI.IsShowingLog())
+            return;
+
         switch (CurrentGameState)
         {
             case IGameState.Initializing:
@@ -96,29 +101,16 @@ public class GameManager : MonoBehaviour
                 ChangeGameState(IGameState.Player_Turn);
                 break;
             case IGameState.CPU_Turn:
-                RandomCPUAttack();
+                if (!cpuActionExecuted) 
+                {
+                    cpuActionExecuted = true;
+                    RandomCPUAttack();
+                }
                 break;
             case IGameState.Player_Turn:
                 break;
             case IGameState.Effect_Turn:
-                cpu_pikomon.ProcessEffects();
-                player_pikomon.ProcessEffects();
-                if (player_pikomon.Health <= 0 || cpu_pikomon.Health <= 0)
-                {
-                    Debug.Log("A Pikomon has fainted!");
-                    Debug.Log($"Player Pikomon Health: {player_pikomon.Health}, CPU Pikomon Health: {cpu_pikomon.Health}");
-                    if (player_pikomon.Health <= 0)
-                    {
-                        Debug.Log("Player Pikomon has fainted!");
-                    }
-                    else
-                    {
-                        Debug.Log("CPU Pikomon has fainted!");
-                    }
-                    ChangeGameState(IGameState.Game_Over);
-                }
-                ChangeGameState(IGameState.Player_Turn);
-
+                ProcessEffects();
                 break;
             case IGameState.Game_Over:
                 Debug.Log("Game Over");
@@ -134,7 +126,12 @@ public class GameManager : MonoBehaviour
     public void ChangeGameState(IGameState newState)
     {
         CurrentGameState = newState;
-            Debug.Log("Game State changed to: " + newState);
+        Debug.Log("Game State changed to: " + newState);
+
+        if (newState == IGameState.Player_Turn)
+        {
+            cpuActionExecuted = false;
+        }
     }
 
     [ContextMenu("Start New Battle")]
@@ -142,8 +139,64 @@ public class GameManager : MonoBehaviour
     {
         InitializeBattle();
     }
-    public void RandomCPUAttack() {
-        cpu_pikomon.Powers[Random.Range(0, cpu_pikomon.Powers.Count)].UsePower(cpu_pikomon,player_pikomon);
-        ChangeGameState(IGameState.Effect_Turn);
+    public void RandomCPUAttack()
+    {
+        var randomPower = cpu_pikomon.Powers[Random.Range(0, cpu_pikomon.Powers.Count)];
+
+        // Show battle log before executing attack
+        if (battleLogUI != null)
+        {
+            battleLogUI.ShowAttackLog(cpu_pikomon, randomPower.Name, () =>
+            {
+                randomPower.UsePower(cpu_pikomon, player_pikomon);
+                ChangeGameState(IGameState.Effect_Turn);
+            });
+        }
+        else
+        {
+            randomPower.UsePower(cpu_pikomon, player_pikomon);
+            ChangeGameState(IGameState.Effect_Turn);
+        }
+    }
+    public void PlayerAttack(Power power)
+    {
+        if (battleLogUI != null)
+        {
+            battleLogUI.ShowAttackLog(player_pikomon, power.Name, () =>
+            {
+                power.UsePower(player_pikomon, cpu_pikomon);
+                ChangeGameState(IGameState.CPU_Turn);
+            });
+        }
+        else
+        {
+            power.UsePower(player_pikomon, cpu_pikomon);
+            ChangeGameState(IGameState.CPU_Turn);
+        }
+    }
+    private void ProcessEffects()
+    {
+        cpu_pikomon.ProcessEffects();
+        player_pikomon.ProcessEffects();
+        
+        if (player_pikomon.Health <= 0 || cpu_pikomon.Health <= 0)
+        {
+            Debug.Log("A Pikomon has fainted!");
+            Debug.Log($"Player Pikomon Health: {player_pikomon.Health}, CPU Pikomon Health: {cpu_pikomon.Health}");
+            
+            if (player_pikomon.Health <= 0)
+            {
+                Debug.Log("Player Pikomon has fainted!");
+            }
+            else
+            {
+                Debug.Log("CPU Pikomon has fainted!");
+            }
+            ChangeGameState(IGameState.Game_Over);
+        }
+        else
+        {
+            ChangeGameState(IGameState.Player_Turn);
+        }
     }
 }
