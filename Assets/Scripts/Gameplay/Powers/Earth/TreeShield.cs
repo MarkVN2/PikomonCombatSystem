@@ -12,16 +12,19 @@ public class TreeShield : Power
         CurrentCharges = 3;
     }
 
-    public override void UsePower(Pikomon user, Pikomon target)
+    public override BattleResult UsePower(Pikomon user, Pikomon target)
     {
+        var result = new BattleResult(false);
         if (CurrentCharges > 0)
         {
             CurrentCharges--;
             int damage = (int)CalculateDamage(user, target);
-            Debug.Log($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
-            if (!Hit()) return;
+            result.messages.Add($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
+            if (!Hit()) return result;
+            result.messages.Add($"{Name} successfully shields {user.Name}!");
             target.TakeDamage(damage);
             user.AddEffect(new WoodShield(user));
         }
+        return result;
     }
 }

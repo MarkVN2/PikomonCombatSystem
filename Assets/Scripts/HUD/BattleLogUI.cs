@@ -89,8 +89,18 @@ public class BattleLogUI : MonoBehaviour
         isWaitingForInput = true;
 
         if (actionText != null)
-            actionText.text = $"{attacker.Name} uses {attackName}!";
-        
+        {
+            if (attacker != null)
+            {
+                actionText.text = $"{attacker.Name} uses {attackName}!";
+            }
+            else
+            {
+                // This is kind of tacky, need a better method to re-use the panel.
+                actionText.text = attackName;
+            }
+
+        }
         StartCoroutine(ShowPanelCoroutine());
     }
     

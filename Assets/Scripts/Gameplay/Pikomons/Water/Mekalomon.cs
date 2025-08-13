@@ -26,7 +26,8 @@ public class Mekalomon : Pikomon
             new RejuvenscentWaters(),
             new RestoringFlame(),
             new WaterBash(),
-            new BloodManipulation()
+            new BloodManipulation(),
+            new Scratch()
         };
     }
 }

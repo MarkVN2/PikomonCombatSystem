@@ -13,18 +13,20 @@ public class Scorching : Power
         CurrentCharges = 3;
     }
 
-    public override void UsePower(Pikomon user, Pikomon target)
+    public override BattleResult UsePower(Pikomon user, Pikomon target)
     {
+        var result = new BattleResult(false);
         if (CurrentCharges > 0)
         {
             CurrentCharges--;
-            Debug.Log($"{Name} used on {user.Name}!");
-            if (!Hit()) return;
+            result.messages.Add($"{Name} used on {user.Name}!");
+            if (!Hit()) return result;
             target.AddEffect(new Burn(target));
         }
         else
         {
-            Debug.Log($"{Name} is out of charges!");
+            result.messages.Add($"{Name} is out of charges!");
         }
+        return result;
     }
 }

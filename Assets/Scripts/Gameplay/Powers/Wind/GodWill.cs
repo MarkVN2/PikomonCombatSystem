@@ -13,14 +13,14 @@ public class GodWill : Power
         CurrentCharges = 1;
     }
 
-    public override void UsePower(Pikomon user, Pikomon target)
+    public override BattleResult UsePower(Pikomon user, Pikomon target)
     {
-
+        var result = new BattleResult(false);
         if (CurrentCharges > 0)
         {
             CurrentCharges--;
-            if (!Hit()) return;
-            Debug.Log($"{Name} used on {user.Name}!");
+            if (!Hit()) return result;
+            result.messages.Add($"{Name} used on {user.Name}!");
             user.Powers.ForEach(p =>
             {
                 if (p is not GodWill)
@@ -28,11 +28,12 @@ public class GodWill : Power
                     p.AddCharge();
                 }
             });
-            Debug.Log($"{user.Name} has gained a charge for each of its powers.");
+            result.messages.Add($"{user.Name} has gained a charge for each of its powers.");
         }
         else
         {
-            Debug.Log($"{Name} is out of charges!");
+            result.messages.Add($"{Name} is out of charges!");
         }
+        return result;
     }
 }

@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -7,6 +9,8 @@ public class GameManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private PikomonHUD playerHUD;
     [SerializeField] private BattleLogUI battleLogUI;
+    [SerializeField] private Button restartButton;
+    
     [Header("Battle Setup")]
     public Transform playerSpawnPoint;
     public Transform cpuSpawnPoint;
@@ -34,6 +38,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+         if (restartButton != null)
+        {
+            restartButton.gameObject.SetActive(false);
+            restartButton.onClick.AddListener(OnRestartButtonClicked);
+        }
         InitializeBattle();
     }
     private void InitializeBattle()
@@ -113,7 +122,7 @@ public class GameManager : MonoBehaviour
                 ProcessEffects();
                 break;
             case IGameState.Game_Over:
-                Debug.Log("Game Over");
+                ShowGameOverUI();
                 break;
             case IGameState.Restarting:
                 Debug.Log("Game is restarting...");
@@ -134,6 +143,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
+     private void ShowGameOverUI()
+    {
+        Debug.Log("Game Over");
+        if (restartButton != null)
+        {
+            restartButton.gameObject.SetActive(true);
+        }
+        
+        if (battleLogUI != null)
+        {
+            string winner = player_pikomon.Health <= 0 ? cpu_pikomon.Name : player_pikomon.Name;
+            battleLogUI.ShowAttackLog(null, $"{winner} wins the battle!", null);
+        }
+    }
+    private void OnRestartButtonClicked()
+    {
+        if (restartButton != null)
+        {
+            restartButton.gameObject.SetActive(false);
+        }
+        
+        ChangeGameState(IGameState.Restarting);
+        InitializeBattle();
+    }
     [ContextMenu("Start New Battle")]
     public void StartNewBattle()
     {
@@ -143,7 +176,6 @@ public class GameManager : MonoBehaviour
     {
         var randomPower = cpu_pikomon.Powers[Random.Range(0, cpu_pikomon.Powers.Count)];
 
-        // Show battle log before executing attack
         if (battleLogUI != null)
         {
             battleLogUI.ShowAttackLog(cpu_pikomon, randomPower.Name, () =>

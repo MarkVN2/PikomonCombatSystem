@@ -26,7 +26,8 @@ public class Dysmon : Pikomon
             new Tornado(),
             new WindBash(),
             new WallOfFortune(),
-            new Whirlwind()
+            new Whirlwind(),
+            new Scratch()
         };
     }
 }

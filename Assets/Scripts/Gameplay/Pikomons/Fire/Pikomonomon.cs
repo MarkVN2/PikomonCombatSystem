@@ -27,7 +27,8 @@ public class Pikomonomon : Pikomon
             new FieryStorm(),
             new Gamble(),
             new Scorching(),
-            new GodWill()
+            new GodWill(),
+            new Scratch()
         };
     }
 }

@@ -26,7 +26,8 @@ public class Madoimon : Pikomon
             new BulletBarrage(),
             new WallOfFortune(),
             new WindBash(),
-            new TenPalms()
+            new TenPalms(),
+            new Scratch()
         };
     }
 }

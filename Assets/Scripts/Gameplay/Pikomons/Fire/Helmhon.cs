@@ -27,7 +27,8 @@ public class Helmhon : Pikomon
             new FieryStorm(),
             new RestoringFlame(),
             new Scorching(),
-            new EnragedInferno()
+            new EnragedInferno(),
+            new Scratch()
         };
     }
 }

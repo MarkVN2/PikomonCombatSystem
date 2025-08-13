@@ -26,7 +26,8 @@ public class Rokumon : Pikomon
             new TenPalms(),
             new EnragedInferno(),
             new Scorching(),
-            new BulletBarrage()
+            new BulletBarrage(),
+            new Scratch()
         };
     }
 }

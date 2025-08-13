@@ -18,7 +18,7 @@ MonoBehaviour:
   gender: 0
   height: 1
   weight: 46
-  frontSprite: {fileID: 0}
-  backSprite: {fileID: 0}
+  frontSprite: {fileID: 6307052655594739869, guid: 9a7862be44a186147bbc6b916c46de59, type: 3}
+  backSprite: {fileID: 6857577963371206105, guid: 1787735acd913d14da90a224868a5c59, type: 3}
   health: 120
   maxHealth: 120

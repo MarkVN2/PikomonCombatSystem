@@ -21,26 +21,29 @@ public class Gamble : Power
         CurrentCharges = 1;
     }
 
-    public override void UsePower(Pikomon user, Pikomon target)
+    public override BattleResult UsePower(Pikomon user, Pikomon target)
     {
+        var result = new BattleResult(false);
         if (CurrentCharges > 0)
         {
             // Special Ability: Gamble deals damage based on the target's health
             CurrentCharges--;
-            BaseDamage = target.Health * Random.Range(0.0f, 0.7f); 
+            BaseDamage = target.Health * Random.Range(0.0f, 0.7f);
             float damage = CalculateDamage(user, target);
-            Debug.Log($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
             if (!Hit())
             {
-                Debug.Log("Good Luck next time");
-                return;
+                result.messages.Add($"Good Luck next time {user.Name}!");
+                return result;
             }
             target.TakeDamage(damage);
-            Debug.Log($"{Name} used on {target.Name}!");
+            result.hit = true;
+            result.damage = damage;
+            result.messages.Add($"{Name} used on {target.Name}!");
         }
         else
         {
             Debug.Log($"{Name} is out of charges!");
         }
+        return result;
     }
 }

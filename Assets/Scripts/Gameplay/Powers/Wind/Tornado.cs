@@ -13,20 +13,22 @@ public class Tornado : Power
         MaxCharges = 4;
         CurrentCharges = 4;
     }
-    public override void UsePower(Pikomon user, Pikomon target)
+    public override BattleResult UsePower(Pikomon user, Pikomon target)
     {
+        var result = new BattleResult(false);
         if (CurrentCharges > 0)
         {
             CurrentCharges--;
             float damage = CalculateDamage(user, target);
-            Debug.Log($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
-            if (!Hit()) return;
+            result.messages.Add($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
+            if (!Hit()) return result;
             target.TakeDamage(damage);
             user.AddEffect(new Windy(user));
         }
         else
         {
-            Debug.Log($"{Name} is out of charges!");
+            result.messages.Add($"{Name} is out of charges!");
         }
+        return result;
     }
 }

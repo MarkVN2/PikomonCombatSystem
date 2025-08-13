@@ -10,8 +10,8 @@ public class PikomonHUD : MonoBehaviour
     [SerializeField] private TextMeshProUGUI pikomonNameText;
     [SerializeField] private GameObject playerHealthSlider;
     [SerializeField] private TextMeshProUGUI healthText;
-    [SerializeField] private Image pikomonPortrait;
-    
+    [SerializeField] private TextMeshProUGUI playerPikomonSpecies;
+
     [Header("Abilities Panel")]
     [SerializeField] private Transform abilitiesContainer;
     [SerializeField] private GameObject abilityButtonPrefab;
@@ -20,6 +20,8 @@ public class PikomonHUD : MonoBehaviour
     [SerializeField] private GameObject cpuHealthSlider;
     [SerializeField] private TextMeshProUGUI cpuNameText;
     [SerializeField] private TextMeshProUGUI cpuHealthText;
+    [SerializeField] private TextMeshProUGUI cpuPikomonSpecies;
+
 
     [Header("BattleInfo")]
 
@@ -59,8 +61,11 @@ public class PikomonHUD : MonoBehaviour
             healthText.text = $"{pikomon.Health:F0}/{pikomon.MaxHealth:F0}";
         if (cpuHealthText != null)
             cpuHealthText.text =$"{cpuPikomon.Health:F0}/{cpuPikomon.MaxHealth:F0}" ;
-        if (pikomonPortrait != null && pikomon.BackSprite != null)
-            pikomonPortrait.sprite = pikomon.BackSprite;
+
+        if (playerPikomonSpecies != null)
+            playerPikomonSpecies.text = pikomon.Species;
+        if (cpuPikomonSpecies != null)
+            cpuPikomonSpecies.text = cpuPikomon.Species;
     }
 
     private void CreateAbilityButtons()

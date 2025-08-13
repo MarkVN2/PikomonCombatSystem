@@ -27,7 +27,8 @@ public class Aquamon : Pikomon
             new RejuvenscentWaters(),
             new SpiralWhip(),
             new WaterSplash(),
-            new BloodManipulation()
+            new BloodManipulation(),
+            new Scratch()
         };
     }
 }

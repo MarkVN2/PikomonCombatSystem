@@ -12,21 +12,22 @@ public class BulletBarrage : Power
         MaxCharges = 10;
         CurrentCharges = 10;
     }
-    public override void UsePower(Pikomon user,Pikomon target)
+    public override BattleResult UsePower(Pikomon user,Pikomon target)
     {
-
+        BattleResult result = new BattleResult(false);
         if (CurrentCharges > 0)
         {
             CurrentCharges--;
             float damage = CalculateDamage(user, target) + ADDITIONAL_DAMAGE;
-            Debug.Log($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
-            if (!Hit()) return;
+            result.messages.Add($"{user.Name} uses {Name} on {target.Name} for {damage} damage!");
+            if (!Hit()) return result;
             target.TakeDamage(damage);
-            Debug.Log($"{Name} used on {target.Name}!");
+            result.messages.Add($"{Name} used on {target.Name}!");
         }
         else
         {
-            Debug.Log($"{Name} is out of charges!");
+            result.messages.Add($"{Name} is out of charges!");
         }
+        return result;
     }
 }

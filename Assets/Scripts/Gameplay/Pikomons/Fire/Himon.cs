@@ -29,6 +29,7 @@ public class Himon : Pikomon
             new RestoringFlame(),
             new Scorching(),
             new TenPalms(),
+            new Scratch()
         };
     }
 }

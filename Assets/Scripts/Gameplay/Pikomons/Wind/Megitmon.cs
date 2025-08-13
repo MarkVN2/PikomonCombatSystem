@@ -26,6 +26,7 @@ public class Megitmon : Pikomon
             new WindSlash(),
             new Scorching(),
             new Tornado(),
+            new Whirlwind(),
             new Scratch()
         };
     }

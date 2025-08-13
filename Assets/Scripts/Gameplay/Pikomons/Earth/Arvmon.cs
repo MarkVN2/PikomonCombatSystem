@@ -26,7 +26,8 @@ public class Arvmon : Pikomon
             new TreeShield(),
             new Gamble(),
             new RejuvenscentWaters(),
-            new BulletBarrage()
+            new BulletBarrage(),
+            new Scratch()
         };
     }
 }

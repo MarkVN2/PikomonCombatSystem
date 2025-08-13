@@ -26,7 +26,7 @@ public abstract class Power
         Current Charges: {CurrentCharges}");
     }
 
-    public abstract void UsePower(Pikomon user, Pikomon target);
+    public abstract BattleResult UsePower(Pikomon user, Pikomon target);
 
     public float CalculateDamage(Pikomon user, Pikomon target)
     {

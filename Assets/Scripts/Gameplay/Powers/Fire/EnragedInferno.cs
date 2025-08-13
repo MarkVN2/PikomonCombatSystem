@@ -12,20 +12,22 @@ public class EnragedInferno : Power
         MaxCharges = 1;
     }
 
-    public override void UsePower(Pikomon user, Pikomon target)
+    public override BattleResult UsePower(Pikomon user, Pikomon target)
     {
+        var result = new BattleResult(false);
         if (CurrentCharges > 0)
         {
             CurrentCharges--;
-            if (!Hit()) return;
-            Debug.Log($"{user.Name} uses {Name} on {user.Name}!");
+            if (!Hit()) return result;
+            result.messages.Add($"{user.Name} uses {Name} on {user.Name}!");
             user.AddEffect(new Enraged(user));
-            Debug.Log($"{Name} used on {target.Name}!");
+            result.messages.Add($"{Name} used on {target.Name}!");
             target.AddEffect(new Burn(target));
         }
         else
         {
-            Debug.Log($"{Name} has no charges left.");
+            result.messages.Add($"{Name} has no charges left.");
         }
+        return result;
     }
 }
